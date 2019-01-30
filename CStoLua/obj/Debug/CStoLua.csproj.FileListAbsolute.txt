@@ -1,0 +1,24 @@
+D:\用户目录\我的文档\Visual Studio 2015\Projects\CStoLua\CStoLua\bin\Debug\CStoLua.exe.config
+D:\用户目录\我的文档\Visual Studio 2015\Projects\CStoLua\CStoLua\bin\Debug\CStoLua.exe
+D:\用户目录\我的文档\Visual Studio 2015\Projects\CStoLua\CStoLua\bin\Debug\CStoLua.pdb
+D:\用户目录\我的文档\Visual Studio 2015\Projects\CStoLua\CStoLua\obj\Debug\CStoLua.csprojResolveAssemblyReference.cache
+D:\用户目录\我的文档\Visual Studio 2015\Projects\CStoLua\CStoLua\obj\Debug\CStoLua.exe
+D:\用户目录\我的文档\Visual Studio 2015\Projects\CStoLua\CStoLua\obj\Debug\CStoLua.pdb
+E:\WorkSpace\CStoLua\CStoLua\bin\Debug\CStoLua.exe.config
+E:\WorkSpace\CStoLua\CStoLua\obj\Debug\CStoLua.exe
+E:\WorkSpace\CStoLua\CStoLua\obj\Debug\CStoLua.pdb
+E:\WorkSpace\CStoLua\CStoLua\bin\Debug\CStoLua.exe
+E:\WorkSpace\CStoLua\CStoLua\bin\Debug\CStoLua.pdb
+E:\WorkSpace\CStoLua\CStoLua\obj\Debug\CStoLua.csprojResolveAssemblyReference.cache
+D:\WorkSpace\CStoLua\CStoLua\bin\Debug\CStoLua.exe.config
+D:\WorkSpace\CStoLua\CStoLua\obj\Debug\CStoLua.exe
+D:\WorkSpace\CStoLua\CStoLua\obj\Debug\CStoLua.pdb
+D:\WorkSpace\CStoLua\CStoLua\bin\Debug\CStoLua.exe
+D:\WorkSpace\CStoLua\CStoLua\bin\Debug\CStoLua.pdb
+D:\WorkSpace\CStoLua\CStoLua\obj\Debug\CStoLua.csprojResolveAssemblyReference.cache
+D:\WorkSpace\client_Manghuangji_Trunk\Document\CStoLua\CStoLua\bin\Debug\CStoLua.exe.config
+D:\WorkSpace\client_Manghuangji_Trunk\Document\CStoLua\CStoLua\obj\Debug\CStoLua.exe
+D:\WorkSpace\client_Manghuangji_Trunk\Document\CStoLua\CStoLua\obj\Debug\CStoLua.pdb
+D:\WorkSpace\client_Manghuangji_Trunk\Document\CStoLua\CStoLua\bin\Debug\CStoLua.exe
+D:\WorkSpace\client_Manghuangji_Trunk\Document\CStoLua\CStoLua\bin\Debug\CStoLua.pdb
+D:\WorkSpace\client_Manghuangji_Trunk\Document\CStoLua\CStoLua\obj\Debug\CStoLua.csprojResolveAssemblyReference.cache

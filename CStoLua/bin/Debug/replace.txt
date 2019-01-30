@@ -1,0 +1,93 @@
+.Find(->:Find(
+.SetParent(->:SetParent(
+as GameObject;->
+).GetDepends(->):GetDepends(
+).RetainShort(->):RetainShort(
+).ReleaseShort(->):ReleaseShort(
+.SetAnchor(->:SetAnchor(
+.SetActive(->:SetActive(
+.Render()->:Render()
+).getCurrentState(->):getCurrentState(
+as GameCamera;->
+" + ->" .. 
+ + "-> .."
+///->---
+//->-- 
+public->
+).Load(->):Load(
+(varObject) =>->function(varObject)
+).Instantiate(->):Instantiate(
+new GameObject(->GameObject(
+.UpdateData()->:UpdateData()
+.SetDepth(->:SetDepth(
+Shader:Find->Shader.Find
+.GetAllRenderer(->:GetAllRenderer(
+.SetData(->:SetData(
+,delegate (->,function (
+ delegate (-> function (
+(delegate (-> (function (
+new Vector3(->Vector3(
+.Rotate(new Vector3(->:Rotate_3F(
+.Rotate(->:Rotate_3F(
+(EventID)->
+EventDispatch.GetSingleton().DispatchEvent->SLuaHelper:DispatchEventTwoSide
+(int ->(
+(long ->(
+(float ->(
+(string ->(
+(bool ->(
+(int)->
+(long)->
+(float)->
+(bool)->
+new EquipmentEntryInfo()->EquipmentEntryInfo()
+new EquipmentClearEntryInfo()->EquipmentClearEntryInfo()
+.Add(->:Add(
+new EquipmentStarEntryInfo()->EquipmentStarEntryInfo()
+ new ->
+LocalTypeEquip.GetSingleton().GetTypeEquip->GameDataManager.LocalTypeEquip:GetTypeEquip
+LocalTypePet.GetSingleton().GetMount_Property->GameDataManager.LocalTypePet:GetMount_Property
+.ShowButtons->:ShowButtons
+})->end)
+if (varGo) then->if varGo~=nil then
+= GetWindow(->= self:GetWindow(
+, bool ->,
+, string ->,
+, int ->,
+, float ->,
+,bool ->,
+,string ->,
+,int ->,
+,float ->,
+.AddSprite(->:AddSprite(
+ OpenWindow(-> self:OpenWindow(
+(GameObject ->(
+, Action<GameObject> ->,
+,Action<GameObject> ->,
+, System.Action ->,
+,System.Action ->,
+LocalTypeSystemfuction.GetSingleton().GetSystemfuciton->GameDataManager.LocalTypeSystemfuction:GetSystemfuciton
+.AddOnFinished(->:AddOnFinished(
+new EventDelegate(()->EventDelegate(function()
+=>->
+.Play(->:Play(
+.ResetUITopLayer->:ResetUITopLayer
+.Clear()->:Clear()
+, System.Action<GameObject> ->,
+,System.Action<GameObject> ->,
+(SystemID)->
+ModelManager.GetSingleton().GetModel->CS.ModelManager.GetSingleton():GetModel
+ OpenFlyUpFont(->self:OpenFlyUpFont(
+ OpenWindowByActID->self:OpenWindowByActID
+.SetSystemToggle(->:SetSystemToggle(
+AudioManager.GetSingleton():PlayAudio(->AudioManager:PlayAudio(
+(!->(not 
+.SetSystemToggle(->:SetSystemToggle(
+EventDispatch.GetSingleton().RegisterEventReceiver(->EventDispatch:RegisterEventCallback(
+EventDispatch.GetSingleton().UnRegisterEventReceiver(->EventDispatch:UnRegisterEventCallback(
+EventID.->EventId.
+else if(->elseif 
+else if (->elseif 
+(Action<GameObject> ->(
+SystemFunctionData.GetSingleton():GetSystemInfoBool->CS.SystemFunctionData.GetSingleton():GetSystemInfoBool
+HuoDongData.GetSingleton().->CS.HuoDongData.GetSingleton().

@@ -1,0 +1,16 @@
+//未开始
+if (tempData.status < (int)ActBaseState.enABS_ActStart)
+{
+	WindowManager.GetSingleton().OpenFlyUpFont(Localization.Get("HuoDong_State1"));
+}
+//准备中
+else if (tempData.status < (int)ActBaseState.enABS_ActFight)
+{
+	WindowManager.GetSingleton().OpenFlyUpFont(Localization.Get("HuoDong_State1"));
+}
+
+else if (tempData.status < (int)ActBaseState.enABS_ActFight) 替换 添加then 去除括号
+
+
+
+PBMessage.GM_XianWu_Info_Requrest tempRequest =PBMessage.GM_XianWu_Info_Requrest() 加了namespace的类名导出替换
