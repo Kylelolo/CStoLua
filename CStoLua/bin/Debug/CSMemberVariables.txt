@@ -1,0 +1,14 @@
+---------------------------------------
+--------  Assembly-CSharp  ------------
+---------------------------------------
+	mRenderTexture	->	self.mRenderTexture	
+	mRenderTexture ->	self.mRenderTexture 
+	mRenderTexture,->	self.mRenderTexture,
+	mRenderTexture)->	self.mRenderTexture)
+	mRenderTexture<->	self.mRenderTexture<
+	mRenderTexture>->	self.mRenderTexture>
+	mRenderTexture&->	self.mRenderTexture&
+	mRenderTexture|->	self.mRenderTexture|
+	mRenderTexture.->	self.mRenderTexture.
+	mRenderTexture:->	self.mRenderTexture:
+ 

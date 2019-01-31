@@ -1633,9 +1633,9 @@
  as DiamondSuit_Dialog;->
  as DiamondSuit_Dialog ;->
 (DiamondSuit_Dialog ->(
- as Postion;->
- as Postion ;->
-(Postion ->(
+ as DiamondSuitDialogPostion;->
+ as DiamondSuitDialogPostion ;->
+(DiamondSuitDialogPostion ->(
  as InheritModel;->
  as InheritModel ;->
 (InheritModel ->(
@@ -1711,24 +1711,6 @@
  as YouCanPage;->
  as YouCanPage ;->
 (YouCanPage ->(
- as UI_FuLiBase;->
- as UI_FuLiBase ;->
-(UI_FuLiBase ->(
- as FuLiData;->
- as FuLiData ;->
-(FuLiData ->(
- as FuLiModel;->
- as FuLiModel ;->
-(FuLiModel ->(
- as FuLiEnum;->
- as FuLiEnum ;->
-(FuLiEnum ->(
- as UI_FuLi;->
- as UI_FuLi ;->
-(UI_FuLi ->(
- as UI_FuLiDialog;->
- as UI_FuLiDialog ;->
-(UI_FuLiDialog ->(
  as UI_GaiMingBase;->
  as UI_GaiMingBase ;->
 (UI_GaiMingBase ->(
@@ -2218,12 +2200,6 @@
  as MainUI_YiJieXuKong;->
  as MainUI_YiJieXuKong ;->
 (MainUI_YiJieXuKong ->(
- as MainUIAttribute;->
- as MainUIAttribute ;->
-(MainUIAttribute ->(
- as MianUIAttributeChange;->
- as MianUIAttributeChange ;->
-(MianUIAttributeChange ->(
  as JoyStickState;->
  as JoyStickState ;->
 (JoyStickState ->(
@@ -3439,48 +3415,6 @@
  as UI_Upgrade;->
  as UI_Upgrade ;->
 (UI_Upgrade ->(
- as UI_UpGradeWindowBase;->
- as UI_UpGradeWindowBase ;->
-(UI_UpGradeWindowBase ->(
- as UI_UpgradeStarAttributeBase;->
- as UI_UpgradeStarAttributeBase ;->
-(UI_UpgradeStarAttributeBase ->(
- as UI_UpgradeStarBase;->
- as UI_UpgradeStarBase ;->
-(UI_UpgradeStarBase ->(
- as UI_UpgradeStarSuitBase;->
- as UI_UpgradeStarSuitBase ;->
-(UI_UpgradeStarSuitBase ->(
- as UI_UpgradeStar_IntensifyBase;->
- as UI_UpgradeStar_IntensifyBase ;->
-(UI_UpgradeStar_IntensifyBase ->(
- as UI_UpgradeStar_XiLianBase;->
- as UI_UpgradeStar_XiLianBase ;->
-(UI_UpgradeStar_XiLianBase ->(
- as UI_UpgradeStar;->
- as UI_UpgradeStar ;->
-(UI_UpgradeStar ->(
- as UI_UpgradeStarAttribute;->
- as UI_UpgradeStarAttribute ;->
-(UI_UpgradeStarAttribute ->(
- as UpgradeStarSuitType;->
- as UpgradeStarSuitType ;->
-(UpgradeStarSuitType ->(
- as UI_UpgradeStarSuit;->
- as UI_UpgradeStarSuit ;->
-(UI_UpgradeStarSuit ->(
- as UI_UpgradeStar_Intensify;->
- as UI_UpgradeStar_Intensify ;->
-(UI_UpgradeStar_Intensify ->(
- as UI_UpgradeStar_XiLian;->
- as UI_UpgradeStar_XiLian ;->
-(UI_UpgradeStar_XiLian ->(
- as UI_UpgradeWindow;->
- as UI_UpgradeWindow ;->
-(UI_UpgradeWindow ->(
- as UpgradeStarModel;->
- as UpgradeStarModel ;->
-(UpgradeStarModel ->(
  as UI_VIPBase;->
  as UI_VIPBase ;->
 (UI_VIPBase ->(
@@ -3493,15 +3427,6 @@
  as UI_VipBossBase;->
  as UI_VipBossBase ;->
 (UI_VipBossBase ->(
- as UI_VipBoss;->
- as UI_VipBoss ;->
-(UI_VipBoss ->(
- as VipBossModel;->
- as VipBossModel ;->
-(VipBossModel ->(
- as VipBossInfo;->
- as VipBossInfo ;->
-(VipBossInfo ->(
  as UI_VIPTiYanBase;->
  as UI_VIPTiYanBase ;->
 (UI_VIPTiYanBase ->(
@@ -3841,30 +3766,6 @@
  as XianMengTaskModel;->
  as XianMengTaskModel ;->
 (XianMengTaskModel ->(
- as UI_XianQiBase;->
- as UI_XianQiBase ;->
-(UI_XianQiBase ->(
- as UI_XianQiPreviewBase;->
- as UI_XianQiPreviewBase ;->
-(UI_XianQiPreviewBase ->(
- as UI_XianQiSkillBase;->
- as UI_XianQiSkillBase ;->
-(UI_XianQiSkillBase ->(
- as UI_XianQi;->
- as UI_XianQi ;->
-(UI_XianQi ->(
- as UI_XianQiPreview;->
- as UI_XianQiPreview ;->
-(UI_XianQiPreview ->(
- as UI_XianQiSkill;->
- as UI_XianQiSkill ;->
-(UI_XianQiSkill ->(
- as XianQiData;->
- as XianQiData ;->
-(XianQiData ->(
- as XianQiModel;->
- as XianQiModel ;->
-(XianQiModel ->(
  as UI_XianShiTeHuiBase;->
  as UI_XianShiTeHuiBase ;->
 (UI_XianShiTeHuiBase ->(
@@ -9037,6 +8938,39 @@
  as GAMEPLATFORM;->
  as GAMEPLATFORM ;->
 (GAMEPLATFORM ->(
+ as Images;->
+ as Images ;->
+(Images ->(
+ as Reporter;->
+ as Reporter ;->
+(Reporter ->(
+ as _LogType;->
+ as _LogType ;->
+(_LogType ->(
+ as Sample;->
+ as Sample ;->
+(Sample ->(
+ as Log;->
+ as Log ;->
+(Log ->(
+ as ReportView;->
+ as ReportView ;->
+(ReportView ->(
+ as DetailView;->
+ as DetailView ;->
+(DetailView ->(
+ as ReporterGUI;->
+ as ReporterGUI ;->
+(ReporterGUI ->(
+ as ReporterMessageReceiver;->
+ as ReporterMessageReceiver ;->
+(ReporterMessageReceiver ->(
+ as Rotate;->
+ as Rotate ;->
+(Rotate ->(
+ as TestReporter;->
+ as TestReporter ;->
+(TestReporter ->(
  as CreateFunc;->
  as CreateFunc ;->
 (CreateFunc ->(

@@ -9,43 +9,131 @@ namespace CStoLua
 {
     class Translator
     {
-        public static string Func_2_Param(string varStr)
+        /// <summary>
+        /// 格式化代码
+        /// 
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <returns></returns>
+        public static string T_Format(string varStr, string[] varSourceArr, int varIndex)
         {
-            string re1 = ".*?"; // Non-greedy match on filler
-            string re2 = "(?:[a-z][a-z0-9_]*)"; // Uninteresting: var
-            string re3 = ".*?"; // Non-greedy match on filler
-            string re4 = "(?:[a-z][a-z0-9_]*)"; // Uninteresting: var
-            string re5 = ".*?"; // Non-greedy match on filler
-            string re6 = "((?:[a-z][a-z0-9_]*))";   // Variable Name 1
-            string re7 = "(\\()";   // Any Single Character 1
-            string re8 = ".*?"; // Non-greedy match on filler
-            string re9 = "(?:[a-z][a-z0-9_]*)"; // Uninteresting: var
-            string re10 = ".*?";    // Non-greedy match on filler
-            string re11 = "((?:[a-z][a-z0-9_]*))";  // Variable Name 2
-            string re12 = "(,)";    // Any Single Character 2
-            string re13 = ".*?";    // Non-greedy match on filler
-            string re14 = "(?:[a-z][a-z0-9_]*)";    // Uninteresting: var
-            string re15 = ".*?";    // Non-greedy match on filler
-            string re16 = "((?:[a-z][a-z0-9_]*))";  // Variable Name 3
-            string re17 = "(\\))";  // Any Single Character 3
+            string tmpOneLine = varStr;
 
-            Regex r = new Regex(re1 + re2 + re3 + re4 + re5 + re6 + re7 + re8 + re9 + re10 + re11 + re12 + re13 + re14 + re15 + re16 + re17, RegexOptions.IgnoreCase | RegexOptions.Singleline);
-            Match m = r.Match(varStr);
-            if (m.Success)
+            //存储前面的空格对齐
+            string tmpTabs = string.Empty;
+
+            int tmpIndexofFirstNoEmptyChar = GetIndexofFirstNoEmptyChar(varStr);
+            if (tmpIndexofFirstNoEmptyChar >= 0)
             {
-                String var1 = m.Groups[1].ToString();
-                String c1 = m.Groups[2].ToString();
-                String var2 = m.Groups[3].ToString();
-                String c2 = m.Groups[4].ToString();
-                String var3 = m.Groups[5].ToString();
-                String c3 = m.Groups[6].ToString();
-
-                string str = var1.ToString() + c1.ToString() + var2.ToString() + c2.ToString() + var3.ToString() + c3.ToString();
-                //Console.Write(str);
-                return str;
+                tmpTabs = varStr.Substring(0, tmpIndexofFirstNoEmptyChar);
             }
-            return varStr;
+
+            //if (self.mStarted == false) { 给 { 左边插入换行符
+            if(containsNewLine(varStr)==false)
+            {
+                StringBuilder tmpStringBuilder = new StringBuilder();
+                for (int i = 0; i < tmpOneLine.Length; i++)
+                {
+                    string tmpStrCombine = string.Empty;
+
+                    char tmpChar = tmpOneLine[i];
+                    if (tmpChar == '{')
+                    {
+                        if (haveCharInLeft(tmpOneLine, i))
+                        {
+                            //如果左边有字母
+                            tmpStrCombine = "\n" + tmpTabs;
+                        }
+                        tmpStrCombine = tmpStrCombine + "{";
+                        if (haveCharInRight(tmpOneLine, i))
+                        {
+                            if(rightIsCharIgnoreEmpty(tmpOneLine,i,'\n'))
+                            {
+                                tmpStrCombine = tmpStrCombine + tmpTabs + "\t";
+                            }
+                            else
+                            {
+                                tmpStrCombine = tmpStrCombine + "\n" + tmpTabs + "\t";
+                            }
+                            
+                        }
+                    }
+                    else if (tmpChar == '}')
+                    {
+                        if (haveCharInLeft(tmpOneLine, i))
+                        {
+                            //如果左边有字母
+                            if (leftIsCharIgnoreEmpty(tmpOneLine, i, '\n'))
+                            {
+                                tmpStrCombine = tmpTabs;
+                            }
+                            else
+                            {
+                                tmpStrCombine = "\n" + tmpTabs;
+                            }
+                                
+                        }
+                        tmpStrCombine = tmpStrCombine + "}";
+                        if (haveCharInRight(tmpOneLine, i))
+                        {
+                            if (leftIsCharIgnoreEmpty(tmpOneLine, i, '\n'))
+                            {
+                                tmpStrCombine = tmpStrCombine + tmpTabs + "\t";
+                            }
+                            else
+                            {
+                                tmpStrCombine = tmpStrCombine + "\n" + tmpTabs + "\t";
+                            }
+                                
+                        }
+                    }
+                    else
+                    {
+                        tmpStrCombine = tmpChar.ToString();
+                    }
+
+                    tmpStringBuilder.Append(tmpStrCombine);
+                }
+                tmpOneLine = tmpStringBuilder.ToString();
+            }
+
+            //if(a<b)
+            //	a++;
+            //if 语句，只有条件，没有大括号
+            //下一句不是空格 也不是大括号 符合条件
+            //给第二行添加大括号
+            {
+                string tmpOneLine_Trimed = tmpOneLine.Trim();
+                if(tmpOneLine_Trimed.StartsWith("if"))
+                {
+                    if(CharCountSame(tmpOneLine_Trimed,'(',')') && CharCountSame(tmpOneLine_Trimed, '{', '}'))
+                    {
+                        //判断下一行是否有大括号
+                        int tmpIndex = varIndex+1;
+                        while (tmpIndex< varSourceArr.Length)
+                        {
+                            if (varSourceArr[tmpIndex].Trim() == string.Empty)
+                            {
+                                tmpIndex++;
+                                continue;
+                            }
+
+                            if(varSourceArr[tmpIndex].Trim().StartsWith("{")==false)
+                            {
+                                //添加{ }
+                                varSourceArr[tmpIndex] = tmpTabs+ "{\n" + varSourceArr[tmpIndex] + "\n"+tmpTabs+"}";
+                                //varSourceArr[tmpIndex] = "{" + varSourceArr[tmpIndex] +"}";
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return tmpOneLine;
         }
+
 
 
         public static string T_AddComponent(string varStr)
@@ -168,13 +256,17 @@ namespace CStoLua
 
                 //先存储前面的占位符空格
                 int tmpBegin = tmpOneLine.IndexOf("GameObject");
-                string tmpTab = tmpOneLine.Substring(0, tmpBegin);
-
-                tmpOneLine = tmpOneLine.Trim();
-                if (tmpOneLine.StartsWith("GameObject"))
+                if(tmpBegin>0)
                 {
-                    tmpOneLine = tmpTab + "local" + tmpOneLine.Substring(10);
+                    string tmpTab = tmpOneLine.Substring(0, tmpBegin);
+
+                    string tmpTrimedLine= tmpOneLine.Trim();
+                    if (tmpTrimedLine.StartsWith("GameObject"))
+                    {
+                        tmpOneLine = tmpTab + "local" + tmpTrimedLine.Substring(10);
+                    }
                 }
+                
             }
             return tmpOneLine;
         }
@@ -229,7 +321,10 @@ namespace CStoLua
             }
             if (tmpOneLine.Trim() == "}")
             {
-                if (varIndex + 1< varSourceArr.Length&&varSourceArr[varIndex + 1].Trim() == "else")
+                if ( (varIndex + 1< varSourceArr.Length&&((varSourceArr[varIndex + 1].Trim().StartsWith("else") || varSourceArr[varIndex + 1].Trim().StartsWith("else if"))))
+                    || (varIndex + 2 < varSourceArr.Length && (varSourceArr[varIndex + 1].Trim()==""&&(varSourceArr[varIndex + 2].Trim().StartsWith("else") || varSourceArr[varIndex + 2].Trim().StartsWith("else if"))))
+
+                    )
                 {
                     tmpOneLine = tmpOneLine.Replace("}", "");
                 }
@@ -293,7 +388,22 @@ namespace CStoLua
                         //说明if语句有换行
                         return varStr;
                     }
-                    
+
+
+                    //如果这一行if 的只有一对小括号 那么就去掉开始的( 和结束的 )
+                    if (GetCharCount(tmpOneLine, '(') ==  GetCharCount(tmpOneLine, ')'))
+                    {
+                        //tmpOneLine = tmpOneLine.Replace("(", "");
+                        //tmpOneLine = tmpOneLine.Replace(")", "");
+
+                        int tmpBeginIndex = tmpOneLine.IndexOf('(');
+                        int tmpEndIndex = tmpOneLine.LastIndexOf(')');
+                        StringBuilder tmpStringBuilder = new StringBuilder(tmpOneLine);
+                        tmpStringBuilder[tmpBeginIndex] = ' ';
+                        tmpStringBuilder[tmpEndIndex] = ' ';
+                        tmpOneLine = tmpStringBuilder.ToString();
+                    }
+
                 }
                 else
                 {
@@ -302,8 +412,72 @@ namespace CStoLua
             }
 
 
+            
+
             return tmpOneLine;
         }
+
+
+        /// <summary>
+        /// 给 else if 后面加 then
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <param name="varSourceArr"></param>
+        /// <param name="varIndex"></param>
+        /// <returns></returns>
+        public static string T_else_if_then(string varStr, string[] varSourceArr, int varIndex)
+        {
+            string tmpOneLine = varStr;
+
+            if (tmpOneLine.Contains("else if"))
+            {
+                //先存储前面的占位符空格
+                int tmpBegin = tmpOneLine.IndexOf("else if");
+                string tmpTab = tmpOneLine.Substring(0, tmpBegin);
+
+                tmpOneLine = tmpOneLine.Trim();
+                if (tmpOneLine.StartsWith("else if") && tmpOneLine.EndsWith(")"))
+                {
+                    //如果下一行是 { ，才说明当前行是完整的else if
+                    if ((varIndex + 1 >= varSourceArr.Length || varSourceArr[varIndex + 1].Trim().StartsWith("{"))
+                        || (varIndex + 2 >= varSourceArr.Length || (varSourceArr[varIndex + 1].Trim() == string.Empty && varSourceArr[varIndex + 2].Trim().StartsWith("{"))))
+                    {
+                        tmpOneLine = tmpTab + tmpOneLine + " then";
+                    }
+                    else
+                    {
+                        //说明if语句有换行
+                        return varStr;
+                    }
+
+
+                    //如果这一行if 的只有一对小括号 那么就去掉开始的( 和结束的 )
+                    if (GetCharCount(tmpOneLine, '(') == GetCharCount(tmpOneLine, ')'))
+                    {
+                        //tmpOneLine = tmpOneLine.Replace("(", "");
+                        //tmpOneLine = tmpOneLine.Replace(")", "");
+
+                        int tmpBeginIndex = tmpOneLine.IndexOf('(');
+                        int tmpEndIndex = tmpOneLine.LastIndexOf(')');
+                        StringBuilder tmpStringBuilder = new StringBuilder(tmpOneLine);
+                        tmpStringBuilder[tmpBeginIndex] = ' ';
+                        tmpStringBuilder[tmpEndIndex] = ' ';
+                        tmpOneLine = tmpStringBuilder.ToString();
+                    }
+
+                }
+                else
+                {
+                    return varStr;
+                }
+            }
+
+
+
+
+            return tmpOneLine;
+        }
+
 
         /// <summary>
         /// 处理Destroy 添加GameObject.
@@ -330,6 +504,54 @@ namespace CStoLua
             return tmpOneLine;
         }
 
+        /// <summary>
+        /// 处理 EventDispatch
+        /// EventDispatch.GetSingleton().RegisterEventReceiver(EventID.Login_RequestConnectLoginServer, this);
+        /// EventDispatch.GetSingleton().UnRegisterEventReceiver(EventID.Login_RequestConnectLoginServer, this);
+        /// EventDispatch:RegisterEventCallback(EventId.Login_RequestVerifyVersion,self,self.Login_RequestVerifyVersion)
+        /// EventDispatch:UnRegisterEventCallback(EventId.LuaFuLi_SingleInfo_Return,self.LuaFuLi_SingleInfo_Return)
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <returns></returns>
+        public static string T_EventDispatch(string varStr)
+        {
+            string tmpOneLine = varStr;
+
+            if (tmpOneLine.Contains("EventDispatch.GetSingleton().RegisterEventReceiver"))
+            {
+                //先存储前面的占位符空格
+                int tmpBegin = tmpOneLine.IndexOf("EventDispatch.GetSingleton().RegisterEventReceiver");
+                string tmpTab = tmpOneLine.Substring(0, tmpBegin);
+
+                tmpOneLine = tmpOneLine.Trim();
+                if (tmpOneLine.StartsWith("EventDispatch.GetSingleton().RegisterEventReceiver"))
+                {
+                    //tmpOneLine = tmpTab + "GameObject." + tmpOneLine;
+                    //tmpOneLine = tmpOneLine.Replace(";", "");
+
+                    tmpOneLine = tmpOneLine.Replace("EventDispatch.GetSingleton().RegisterEventReceiver(", "EventDispatch:RegisterEventCallback(");
+                    tmpOneLine = tmpOneLine.Replace("this", "self,self.");
+                }
+            }
+
+            if (tmpOneLine.Contains("EventDispatch.GetSingleton().UnRegisterEventReceiver("))
+            {
+                //先存储前面的占位符空格
+                int tmpBegin = tmpOneLine.IndexOf("EventDispatch.GetSingleton().UnRegisterEventReceiver(");
+                string tmpTab = tmpOneLine.Substring(0, tmpBegin);
+
+                tmpOneLine = tmpOneLine.Trim();
+                if (tmpOneLine.StartsWith("EventDispatch.GetSingleton().UnRegisterEventReceiver("))
+                {
+                    //tmpOneLine = tmpTab + "GameObject." + tmpOneLine;
+                    //tmpOneLine = tmpOneLine.Replace(";", "");
+
+                    tmpOneLine = tmpOneLine.Replace("EventDispatch.GetSingleton().UnRegisterEventReceiver(", "EventDispatch:UnRegisterEventCallback(");
+                    tmpOneLine = tmpOneLine.Replace("this", "self.");
+                }
+            }
+            return tmpOneLine;
+        }
 
         /// <summary>
         /// 处理LastIndexOf("
@@ -514,6 +736,8 @@ namespace CStoLua
             return tmpOneLine;
         }
 
+        
+
         /// <summary>
         /// 判断是否含有多个查找的标记
         /// </summary>
@@ -559,7 +783,174 @@ namespace CStoLua
             return varStr.Substring(0, varStr.IndexOf(varBegin));
         }
 
-        
-       
+        /// <summary>
+        /// 计算一个字符出现的次数
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <returns></returns>
+        public static int GetCharCount(string varStr,char c)
+        {
+            int tmpCount = 0;
+            for (int i = 0; i < varStr.Length; i++)
+            {
+                if(varStr[i]==c)
+                {
+                    tmpCount++;
+                }
+            }
+            return tmpCount;
+        }
+
+        /// <summary>
+        /// 判断字符串中两个字符数量相等
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <param name="varCharA"></param>
+        /// <param name="varCharB"></param>
+        /// <returns></returns>
+        public static bool CharCountSame(string varStr,char varCharA,char varCharB)
+        {
+            return GetCharCount(varStr, varCharA) == GetCharCount(varStr, varCharB);
+        }
+
+        /// <summary>
+        /// 找到第一个非空字符
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <returns></returns>
+        public static int GetIndexofFirstNoEmptyChar(string varStr)
+        {
+            int tmpIndex = 0;
+            for (int i = 0; i < varStr.Length; i++)
+            {
+                char c = varStr[i];
+                if (c!=' ' && c!='\t' && c!='\n')
+                {
+                    return tmpIndex;
+                }
+                tmpIndex++;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// 找到字一个字母的index
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <returns></returns>
+        public static int GetIndexofFirstChar(string varStr)
+        {
+            int tmpIndex = 0;
+            for (int i = 0; i < varStr.Length; i++)
+            {
+                char c = varStr[i];
+                if ((c>=65 && c<=90) || (c>=97 && c<=122))
+                {
+                    return tmpIndex;
+                }
+                tmpIndex++;
+            }
+            return -1;
+        }
+
+        //判断是否是字母
+        public static bool isChar(char c)
+        {
+            return (c >= 65 && c <= 90) || (c >= 97 && c <= 122);
+        }
+
+        //判断指定位置右边是否有字母
+        public static bool haveCharInRight(string varStr,int varIndex)
+        {
+            for (int i = varIndex; i < varStr.Length; i++)
+            {
+                if(isChar(varStr[i]))
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+        //判断指定位置左边是否有字母
+        public static bool haveCharInLeft(string varStr, int varIndex)
+        {
+            for (int i = varIndex; i >=0; i--)
+            {
+                if (isChar(varStr[i]))
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 当前 右边 除了空格，是指定的字符
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <param name="varIndex"></param>
+        /// <param name="varChar"></param>
+        /// <returns></returns>
+        public static bool rightIsCharIgnoreEmpty(string varStr,int varIndex,char varChar)
+        {
+            varIndex = varIndex + 1;
+            for (int i = varIndex; i < varStr.Length; i++)
+            {
+                if(varStr[i]==' ' || varStr[i] == '\t')
+                {
+                    continue;
+                }
+                if (varStr[i]== varChar)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 当前 左边 除了空格，是指定的字符
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <param name="varIndex"></param>
+        /// <param name="varChar"></param>
+        /// <returns></returns>
+        public static bool leftIsCharIgnoreEmpty(string varStr, int varIndex, char varChar)
+        {
+            for (int i = varIndex-1; i >=0; i--)
+            {
+                if (varStr[i] == ' ' || varStr[i] == '\t')
+                {
+                    continue;
+                }
+                if (varStr[i] == varChar)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 是否包含换行符
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <returns></returns>
+        public static bool containsNewLine(string varStr)
+        {
+            for (int i = 0; i < varStr.Length; i++)
+            {
+                if(varStr[i]=='\n')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

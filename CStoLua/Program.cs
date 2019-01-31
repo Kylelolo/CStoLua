@@ -65,6 +65,23 @@ namespace CStoLua
                     
                 }
             }
+            {
+                string[] tmpReplaceDataArr = File.ReadAllLines("./CSMemberVariables.txt");
+                for (int i = 0; i < tmpReplaceDataArr.Length; i++)
+                {
+                    string tmpOneLine = tmpReplaceDataArr[i];
+                    string[] tmpKeyValue = tmpOneLine.Split(new string[] { "->" }, StringSplitOptions.None);
+                    if (tmpKeyValue.Length != 2)
+                    {
+                        continue;
+                    }
+                    if (mReplaceData.ContainsKey(tmpKeyValue[0]) == false)
+                    {
+                        mReplaceData.Add(tmpKeyValue[0], tmpKeyValue[1]);
+                    }
+
+                }
+            }
         }
 
         static List<string> mRemoveBeginData = new List<string>();
@@ -113,7 +130,7 @@ namespace CStoLua
 
 
             tmpOneLine = Translator.T_if_add_then(tmpOneLine, mSourceStrArr, i);
-
+            tmpOneLine = Translator.T_else_if_then(tmpOneLine, mSourceStrArr, i);
 
             tmpOneLine = Translator.T_And_OR(tmpOneLine);
             tmpOneLine = Translator.T_UIPath_UI_Path(tmpOneLine);
@@ -128,7 +145,7 @@ namespace CStoLua
             tmpOneLine = Translator.T_float(tmpOneLine);
 
 
-
+            tmpOneLine = Translator.T_EventDispatch(tmpOneLine);
             
 
 
@@ -156,29 +173,51 @@ namespace CStoLua
             LoadGlobalReplaceData();
             LoadRemoveBeginData();
 
-            
 
 
 
-            mSourceStrArr = File.ReadAllLines("./src.cs");
 
-            for (int i = 0; i < mSourceStrArr.Length; i++)
+
+
+            //先格式化
             {
-                string tmpOneLine = mSourceStrArr[i];
+                mSourceStrArr = File.ReadAllLines("./src.cs");
+                for (int i = 0; i < mSourceStrArr.Length; i++)
+                {
+                    string tmpOneLine = mSourceStrArr[i];
 
-                tmpOneLine = translat(tmpOneLine, mSourceStrArr,i);
-                tmpOneLine = translat(tmpOneLine, mSourceStrArr, i);
+                    tmpOneLine = Translator.T_Format(tmpOneLine, mSourceStrArr, i);
 
-                Console.WriteLine(tmpOneLine);
+                    Console.WriteLine(tmpOneLine);
 
-                mSourceStrArr[i] = tmpOneLine;
+                    mSourceStrArr[i] = tmpOneLine;
+                }
+                //写文件
+                File.WriteAllLines("./src_format.cs", mSourceStrArr);
             }
 
 
-            Console.ReadLine();
+            //转换
+            {
+                mSourceStrArr = File.ReadAllLines("./src_format.cs");
+                for (int i = 0; i < mSourceStrArr.Length; i++)
+                {
+                    string tmpOneLine = mSourceStrArr[i];
 
-            //写文件
-            File.WriteAllLines("./new.cs", mSourceStrArr);
+                    tmpOneLine = translat(tmpOneLine, mSourceStrArr, i);
+                    tmpOneLine = translat(tmpOneLine, mSourceStrArr, i);
+
+                    Console.WriteLine(tmpOneLine);
+
+                    mSourceStrArr[i] = tmpOneLine;
+                }
+
+                //写文件
+                File.WriteAllLines("./new.lua", mSourceStrArr);
+
+                Console.WriteLine("---------------SUCCESS-----------------");
+                Console.ReadLine();
+            }
         }
 
 

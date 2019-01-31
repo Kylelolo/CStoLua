@@ -12,9 +12,51 @@ using System.Reflection;
 public class ExportSymbol 
 {
 
+
 	[MenuItem("XLua/ExportSymbol")]
 	public static void Export()
 	{
+		//导出成员变量 添加self.
+		{
+			StreamWriter tmpStreamWrite = new StreamWriter (Application.dataPath + "/../Document/CStoLua/CStoLua/bin/Debug/CSMemberVariables.txt",false);
+			{
+				var classes = Assembly.Load("Assembly-CSharp").GetTypes();
+				tmpStreamWrite.WriteLine ("---------------------------------------");
+				tmpStreamWrite.WriteLine ("--------  Assembly-CSharp  ------------");
+				tmpStreamWrite.WriteLine ("---------------------------------------");
+
+
+				string[] tmpBeginChars = new string[]{"\t"," ",",","(","<",">","&","|"};
+				string[] tmpEndChars = new string[]{"\t"," ",",",")","<",">","&","|",".",":"};
+
+				foreach (var item in classes)
+				{
+					if (item.Name.Contains ("<") || item.Name.Contains ("$") || item.Name.Contains ("`")) {
+						continue;
+					}
+
+					FieldInfo[] tmpFieldInfos= item.GetFields(BindingFlags.NonPublic | BindingFlags.Instance |BindingFlags.Public);
+					for (int i = 0; i < tmpFieldInfos.Length; i++) 
+					{
+						FieldInfo tmpFieldInfo = tmpFieldInfos [i];
+						if (tmpFieldInfo.Name.StartsWith ("m")) {
+							for (int tmpBeginCharIndex = 0; tmpBeginCharIndex < tmpBeginChars.Length; tmpBeginCharIndex++) {
+								for (int tmpEndCharIndex = 0; tmpEndCharIndex < tmpEndChars.Length; tmpEndCharIndex++) {
+									string tmpBeginChar = tmpBeginChars [tmpBeginCharIndex];
+									string tmpEndChar = tmpEndChars [tmpEndCharIndex];
+
+									tmpStreamWrite.WriteLine (tmpBeginChar+tmpFieldInfo.Name+tmpEndChar+"->"+tmpBeginChar+"self."+tmpFieldInfo.Name+tmpEndChar);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			tmpStreamWrite.Flush ();
+			tmpStreamWrite.Close ();
+		}
+
 		//导出类名
 		{
 			StreamWriter tmpStreamWrite = new StreamWriter (Application.dataPath + "/../Document/CStoLua/CStoLua/bin/Debug/CSTypes.txt",false);

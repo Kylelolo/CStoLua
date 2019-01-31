@@ -82,12 +82,19 @@ ModelManager.GetSingleton().GetModel->CS.ModelManager.GetSingleton():GetModel
 .SetSystemToggle(->:SetSystemToggle(
 AudioManager.GetSingleton():PlayAudio(->AudioManager:PlayAudio(
 (!->(not 
+!-> not 
 .SetSystemToggle(->:SetSystemToggle(
 EventDispatch.GetSingleton().RegisterEventReceiver(->EventDispatch:RegisterEventCallback(
 EventDispatch.GetSingleton().UnRegisterEventReceiver(->EventDispatch:UnRegisterEventCallback(
 EventID.->EventId.
-else if(->elseif 
-else if (->elseif 
+else if->elseif 
+else if ->elseif 
 (Action<GameObject> ->(
 SystemFunctionData.GetSingleton():GetSystemInfoBool->CS.SystemFunctionData.GetSingleton():GetSystemInfoBool
 HuoDongData.GetSingleton().->CS.HuoDongData.GetSingleton().
+WindowManager.GetSingleton():->WindowManager:
+DelayTaskManager.GetSingleton().RemoveTask->DelayTaskManager:RemoveTask
+void ->function 
+public -> 
+private -> 
+override -> 
