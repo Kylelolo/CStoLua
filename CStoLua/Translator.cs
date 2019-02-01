@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace CStoLua
 {
@@ -135,6 +136,137 @@ namespace CStoLua
         }
 
 
+        
+
+        /// <summary>
+        /// 替换函数定义的一行
+        /// public override void Awake()
+        /// public void Awake()
+        /// void Awake()
+        ///   string Awake()
+        /// </summary>
+        /// <param name="varStr"></param>
+        /// <returns></returns>
+        public static string T_FunctionDeclare(string varStr)
+        {
+
+
+            int tmpWordNum = 0;//统计(左边的单词数量)
+            bool tmpBeginCountWordNum = false;//跳过一行前面的空格 与 tab 等，开始统计左边单词数量,>=2是基本条件
+            bool tmpFinishCountWordNum = false;
+
+            int tmpFunctionNameBeginIndex = 0;//函数名从第几位开始
+            int tmpLeftParenthesesIndex = 0;//( 在第几位
+
+            for (int i = 0; i < varStr.Length; i++)
+            {
+                char tmpChar = varStr[i];
+
+                if (tmpFinishCountWordNum)
+                {
+                    //检查( 右边字符
+                    //这里过滤= 就会过滤掉带有默认参数的函数
+                    if (tmpChar == ';' || tmpChar == '=')
+                    {
+                        tmpWordNum = 0;
+                        break;
+                    }
+                    continue;
+                }
+
+                //--------------------------
+                //当 检查到 ( 之后，下面的代码就不会执行了
+                // 只会走上面的检查 ( 右边的字符串
+                //------------------------
+
+                //检查( 左边字符
+                if(tmpChar=='(')
+                {
+                    if(tmpBeginCountWordNum)
+                    {
+                        tmpWordNum++;
+                    }
+                    tmpLeftParenthesesIndex = i;
+                    tmpFinishCountWordNum = true;
+                    if(tmpWordNum<2)
+                    {
+                        break;
+                    }
+                    continue;
+                }
+
+                //函数定义式  ( 左边不能有其他特殊字符
+                if(tmpChar==' ' || tmpChar=='\n' || tmpChar=='\t')
+                {
+                    if (tmpBeginCountWordNum==false)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    //检查 ( 左边的单词是否合格
+                    string tmpSubString_TrimLeft = varStr.Substring(i);
+                    if (tmpSubString_TrimLeft.StartsWith("if(")
+                        || tmpSubString_TrimLeft.StartsWith("if ")
+                        || tmpSubString_TrimLeft.StartsWith("else(")
+                        || tmpSubString_TrimLeft.StartsWith("else ")
+                        || tmpSubString_TrimLeft.StartsWith("for(")
+                        || tmpSubString_TrimLeft.StartsWith("for ")
+                        || tmpSubString_TrimLeft.StartsWith("foreach(")
+                        || tmpSubString_TrimLeft.StartsWith("foreach ")
+                        || tmpSubString_TrimLeft.StartsWith("new "))
+                    {
+                        tmpWordNum = 0;
+                        break;
+                    }
+                    if (isChar(tmpChar)==false)
+                    {
+                        tmpWordNum = 0;
+                        break;
+                    }
+                }
+
+                tmpBeginCountWordNum = true;
+
+                
+
+                if(tmpChar==' ')
+                {
+                    tmpWordNum++;
+                    tmpBeginCountWordNum = false;
+
+                    //每次遇到空格，都更新tmpFunctionNameBeginIndex,这个Index是带空格的，所以下面往前面加上function的时候不用带空格
+                    if(rightIsCharIgnoreEmpty(varStr,i,'(')==false)
+                    {
+                        tmpFunctionNameBeginIndex = i;
+                    }
+                }
+            }
+
+            if(tmpWordNum>=2 && tmpFinishCountWordNum)
+            {
+                
+
+
+                string tmpFuncName = varStr.Substring(tmpFunctionNameBeginIndex, tmpLeftParenthesesIndex - tmpFunctionNameBeginIndex);
+                //Console.WriteLine(tmpFuncName);
+
+                string tmpTabs = varStr.Substring(0,GetIndexofFirstNoEmptyChar(varStr));
+
+                string tmpNewLine = tmpTabs + "function" + varStr.Substring(tmpFunctionNameBeginIndex);
+                Console.WriteLine(tmpNewLine);
+                varStr = tmpNewLine;
+
+
+                //StreamWriter tmpStreamWrite = new StreamWriter("./testfunctions.cs", true);
+                //tmpStreamWrite.WriteLine(varStr);
+                //tmpStreamWrite.Flush();
+                //tmpStreamWrite.Close();
+            }
+
+            return varStr;
+        }
 
         public static string T_AddComponent(string varStr)
         {

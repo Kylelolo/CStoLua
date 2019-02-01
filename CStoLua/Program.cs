@@ -118,6 +118,10 @@ namespace CStoLua
 
         static string translat(string tmpOneLine, string[] mSourceStrArr, int i)
         {
+            tmpOneLine = Translator.T_FunctionDeclare(tmpOneLine);
+
+            //return tmpOneLine;
+
             tmpOneLine = Translator.T_AddComponent(tmpOneLine);
             tmpOneLine = Translator.T_GetComponent(tmpOneLine);
             tmpOneLine = Translator.T_GetComponentsInChildren(tmpOneLine);
@@ -168,7 +172,7 @@ namespace CStoLua
         {
             string tmpExeDir= AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
             Directory.SetCurrentDirectory(tmpExeDir);
-            Console.WriteLine("WorkingPath:" + tmpExeDir);
+            //Console.WriteLine("WorkingPath:" + tmpExeDir);
 
             LoadGlobalReplaceData();
             LoadRemoveBeginData();
@@ -188,7 +192,7 @@ namespace CStoLua
 
                     tmpOneLine = Translator.T_Format(tmpOneLine, mSourceStrArr, i);
 
-                    Console.WriteLine(tmpOneLine);
+                    //Console.WriteLine(tmpOneLine);
 
                     mSourceStrArr[i] = tmpOneLine;
                 }
@@ -205,9 +209,9 @@ namespace CStoLua
                     string tmpOneLine = mSourceStrArr[i];
 
                     tmpOneLine = translat(tmpOneLine, mSourceStrArr, i);
-                    tmpOneLine = translat(tmpOneLine, mSourceStrArr, i);
+                    //tmpOneLine = translat(tmpOneLine, mSourceStrArr, i);
 
-                    Console.WriteLine(tmpOneLine);
+                    //Console.WriteLine(tmpOneLine);
 
                     mSourceStrArr[i] = tmpOneLine;
                 }

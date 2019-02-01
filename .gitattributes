@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+CStoLua/bin/Debug/CSMemberVariables.txt
+CStoLua/bin/Debug/CSFunctions.txt
+CStoLua/bin/Debug/CSTypes.txt
+CStoLua/bin/Debug/CSTypes_replace.txt
